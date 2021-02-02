@@ -4,26 +4,44 @@ require 'pry'
 
 
 def load_library(emoji_file)
-  final_hash = {}
   new_file = YAML.load_file(emoji_file)
 
-  final_result=  new_file.each_with_object ({}) do |feeling, final_array|
-        feeling.each do |language|
-            if !final_array[feeling][language]
-            final_array[feeling][language]= []
-            end
-        end
+  final_result= new_file.each_with_object ({}) do |(descriptor, emoji), new_hash|
+    new_hash[descriptor]= {"english": emoji[0], "japanese": emoji[1]}
   end
+  # binding.pry
 end
 
-  # new_file [feeling][language] = emoji
-binding.pry
 
-
-def get_japanese_emoticon
-  # code goes here
+def get_japanese_emoticon(emoji_file, emoticon)
+  emoticons = load_library(emoji_file)
+# binding.pry
+ counter = 0
+  while counter<emoticons.values.length do
+    if emoticons.values[counter][:english] == emoticon
+      return emoticons.values[counter][:japanese]
+    end
+    counter +=1
+  end
+  return  "Sorry, that emoticon was not found"
 end
+# binding.pry
 
-def get_english_meaning
-  # code goes here
+
+
+
+
+def get_english_meaning(emoji_file, emoticon)
+  emoticons = load_library(emoji_file)
+  # binding.pry
+  counter = 0
+   while counter<emoticons.values.length do
+     if emoticons.values[counter][:japanese] == emoticon
+       return emoticons.keys[counter]
+     end
+     counter +=1
+   end
+   return  "Sorry, that emoticon was not found"
+
+
 end
